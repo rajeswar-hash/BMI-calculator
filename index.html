@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            width: 80%;
+        }
+        button {
+            cursor: pointer;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>BMI Calculator</h2>
+        <label for="weight">Weight:</label>
+        <input type="number" id="weight" placeholder="Enter weight">
+        <select id="weight-unit">
+            <option value="kg">kg</option>
+            <option value="lbs">lbs</option>
+        </select>
+        <br>
+        <label for="height">Height:</label>
+        <input type="number" id="height" placeholder="Enter height">
+        <select id="height-unit">
+            <option value="cm">cm</option>
+            <option value="m">meters</option>
+            <option value="ft">feet</option>
+        </select>
+        <br>
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let weight = parseFloat(document.getElementById("weight").value);
+            let height = parseFloat(document.getElementById("height").value);
+            let weightUnit = document.getElementById("weight-unit").value;
+            let heightUnit = document.getElementById("height-unit").value;
+            let resultElement = document.getElementById("result");
+
+            if (weightUnit === "lbs") {
+                weight = weight * 0.453592; // Convert lbs to kg
+            }
+            if (heightUnit === "cm") {
+                height = height / 100; // Convert cm to meters
+            } else if (heightUnit === "ft") {
+                height = height * 0.3048; // Convert feet to meters
+            }
+
+            if (isNaN(weight) || isNaN(height) || height === 0) {
+                resultElement.innerHTML = "<span style='color: red;'>Please enter valid values!</span>";
+                return;
+            }
+
+            let bmi = weight / (height * height);
+            let category = "";
+            let color = "black";
+
+            if (bmi < 18.5) {
+                category = "Underweight - Start a healthy diet!";
+                color = "blue";
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = "Normal weight - Keep it up!";
+                color = "green";
+            } else if (bmi >= 25 && bmi < 30) {
+                category = "Overweight - Consider a balanced diet & exercise!";
+                color = "orange";
+            } else {
+                category = "Obese - Consult a doctor & stay healthy!";
+                color = "red";
+            }
+
+            resultElement.innerHTML = `Your BMI: <span style='color: ${color};'>${bmi.toFixed(2)}</span><br>${category}`;
+        }
+    </script>
+</body>
+</html>
